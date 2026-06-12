@@ -381,6 +381,7 @@
   .detail-nav button:hover { background: rgba(202,170,152,0.22); }
   .detail-nav button:disabled { opacity: 0.3; cursor: default; }
 
+  /* Velký monitor (1600px+) */
   @media (min-width: 1600px) {
     .page { padding: 56px 80px 80px; }
     .sections { gap: 180px; }
@@ -390,12 +391,14 @@
     .modal-grid.wide-cards { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
   }
 
+  /* Střední velký monitor (1400–1599px) */
   @media (min-width: 1400px) and (max-width: 1599px) {
     .section { flex: 0 0 260px; }
     .card-stack { height: 270px; }
     .sections { gap: 160px; }
   }
 
+  /* Menší monitor / notebook (900–1199px) */
   @media (max-width: 1199px) {
     .page { padding: 32px 36px 52px; }
     .sections { gap: 80px; margin-top: 80px; }
@@ -406,7 +409,8 @@
     .detail-image { width: 44%; }
   }
 
-  @media (max-width: 899px) {
+  /* Tablet na šířku (768–899px) */
+  @media (max-width: 899px) and (min-width: 768px) {
     .page { padding: 28px 24px 48px; }
     .header { flex-direction: column; gap: 12px; align-items: flex-start; }
     .name-block { align-self: flex-end; margin-top: -8px; }
@@ -419,6 +423,55 @@
     .detail-image { width: 100%; aspect-ratio: 2/3; max-width: 280px; margin: 0 auto; }
     .detail-box--wide .detail-image { max-width: 100%; aspect-ratio: 16/9; }
     .detail-close { top: -10px; right: -10px; }
+  }
+
+  /* Mobil (do 767px) */
+  @media (max-width: 767px) {
+    .page { padding: 24px 20px 60px; }
+
+    .header { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .name-block { align-self: flex-end; margin-top: -8px; font-size: 13px; }
+    .main-title { font-size: clamp(28px, 9vw, 44px); }
+
+    .sections {
+      flex-direction: column;
+      align-items: center;
+      gap: 56px;
+      margin-top: 48px;
+    }
+
+    .section {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .section-title { font-size: 18px; }
+
+    .card-stack { height: 210px; }
+
+    /* Modal */
+    .modal-box { padding: 24px 16px; }
+    .modal-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .modal-grid.wide-cards { grid-template-columns: 1fr; }
+
+    /* Detail */
+    .detail-overlay { padding: 24px 16px; align-items: flex-start; }
+    .detail-box {
+      flex-direction: column;
+      gap: 20px;
+      max-width: 100%;
+      padding-top: 24px;
+    }
+    .detail-image {
+      width: 100%;
+      max-width: 240px;
+      margin: 0 auto;
+    }
+    .detail-box--wide .detail-image { max-width: 100%; aspect-ratio: 16/9; }
+    .detail-close { top: -8px; right: -8px; }
+    .detail-name { font-size: 26px; }
+    .detail-nav { padding-top: 12px; }
   }
 </style>
 </head>
