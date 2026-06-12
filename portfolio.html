@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio & Logofolio — Martin Losos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; font-family: 'Syne', sans-serif; }
+
+  body {
+    background-color: #202940;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url('texture.webp');
+    background-size: cover;
+    background-position: center;
+    mix-blend-mode: screen;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    width: 100%;
+    padding: 28px 40px 48px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .main-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(22px, 3.5vw, 54px);
+    color: #CAAA98;
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+  }
+
+  .title-line {
+    display: inline-block;
+    background: #4B4038;
+    padding: 4px 14px 6px;
+    margin-bottom: 6px;
+  }
+
+  .name-block {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(11px, 1.4vw, 20px);
+    color: #CAAA98;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: #4B4038;
+    padding: 6px 18px 8px;
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+
+  .sections {
+    display: flex;
+    gap: 140px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    margin-top: 120px;
+    width: 100%;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 220px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(13px, 1.5vw, 24px);
+    color: #CAAA98;
+    background: #4B4038;
+    padding: 4px 16px 6px;
+    margin-bottom: 18px;
+    align-self: center;
+    display: inline-block;
+  }
+
+  .card-stack {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    cursor: pointer;
+  }
+
+  .card-stack .card {
+    position: absolute;
+    width: 42%;
+    aspect-ratio: 2/3;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.45), 0 4px 14px rgba(0,0,0,0.3);
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(.25,.8,.25,1);
+  }
+
+  .card-stack .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-stack .card--wide {
+    aspect-ratio: 16/10;
+    width: 72%;
+  }
+
+  .card-stack .card:nth-child(1) { left: 2%; bottom: 0; transform: rotate(-10deg); transform-origin: bottom center; z-index: 1; }
+  .card-stack .card:nth-child(2) { left: 50%; transform: translateX(-50%) rotate(-1deg); bottom: 0; z-index: 2; }
+  .card-stack .card:nth-child(3) { right: 2%; bottom: 0; transform: rotate(9deg); transform-origin: bottom center; z-index: 1; }
+
+  .card-stack:hover .card:nth-child(1) { transform: rotate(-13deg) translateY(-8px); }
+  .card-stack:hover .card:nth-child(2) { transform: translateX(-50%) translateY(-12px) rotate(-1deg); }
+  .card-stack:hover .card:nth-child(3) { transform: rotate(12deg) translateY(-8px); }
+
+  .placeholder-bg { width: 100%; height: 100%; background: #e8e2dc; }
+
+  .modal-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    padding: 36px 24px;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+  .modal-box {
+    background: transparent;
+    padding: 40px 32px;
+    width: 100%;
+    max-width: 960px;
+    position: relative;
+    transform: translateY(24px);
+    transition: transform 0.35s ease;
+  }
+  .modal-overlay.active .modal-box { transform: translateY(0); }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(22px, 3vw, 44px);
+    color: #CAAA98;
+    background: #4B4038;
+    padding: 6px 20px 8px;
+    display: inline-block;
+  }
+
+  .modal-close {
+    background: rgba(202,170,152,0.12);
+    border: 1px solid rgba(202,170,152,0.3);
+    color: #CAAA98;
+    font-size: 17px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .modal-close:hover { background: rgba(202,170,152,0.25); }
+
+  .modal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 18px;
+  }
+
+  .modal-grid.wide-cards {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .modal-card {
+    aspect-ratio: 2/3;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.4);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .modal-grid.wide-cards .modal-card {
+    aspect-ratio: 16/10;
+  }
+  .modal-card:hover { transform: scale(1.04); }
+  .modal-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .detail-overlay {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    z-index: 2000;
+    padding: 40px 24px;
+    overflow-y: auto;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .detail-overlay.active { opacity: 1; pointer-events: all; }
+
+  .detail-box {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 880px;
+    position: relative;
+    transform: translateY(28px);
+    transition: transform 0.35s ease;
+  }
+  .detail-overlay.active .detail-box { transform: translateY(0); }
+
+  .detail-image {
+    flex: 0 0 auto;
+    width: 40%;
+    aspect-ratio: 2/3;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .detail-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .detail-box--wide { flex-direction: column; max-width: 760px; }
+  .detail-box--wide .detail-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+  }
+
+  .detail-content {
+    flex: 1;
+    padding-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .detail-category {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(202,170,152,0.5);
+  }
+
+  .detail-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(22px, 3vw, 42px);
+    color: #CAAA98;
+    line-height: 1.15;
+  }
+
+  .detail-divider {
+    width: 40px;
+    height: 1.5px;
+    background: rgba(202,170,152,0.3);
+  }
+
+  .detail-description {
+    font-family: 'Syne', sans-serif;
+    font-weight: 400;
+    font-size: clamp(13px, 1.3vw, 15px);
+    color: rgba(202,170,152,0.8);
+    line-height: 1.75;
+  }
+
+  .detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .detail-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(202,170,152,0.6);
+    border: 1px solid rgba(202,170,152,0.22);
+    border-radius: 20px;
+    padding: 4px 12px;
+  }
+
+  .detail-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    background: rgba(202,170,152,0.12);
+    border: 1px solid rgba(202,170,152,0.3);
+    color: #CAAA98;
+    font-size: 17px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .detail-close:hover { background: rgba(202,170,152,0.25); }
+
+  .detail-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 20px;
+  }
+  .detail-nav button {
+    background: rgba(202,170,152,0.1);
+    border: 1px solid rgba(202,170,152,0.25);
+    color: #CAAA98;
+    font-size: 18px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .detail-nav button:hover { background: rgba(202,170,152,0.22); }
+  .detail-nav button:disabled { opacity: 0.3; cursor: default; }
+
+  @media (min-width: 1600px) {
+    .page { padding: 56px 80px 80px; }
+    .sections { gap: 180px; }
+    .section { flex: 0 0 300px; }
+    .card-stack { height: 320px; }
+    .modal-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    .modal-grid.wide-cards { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+  }
+
+  @media (min-width: 1400px) and (max-width: 1599px) {
+    .section { flex: 0 0 260px; }
+    .card-stack { height: 270px; }
+    .sections { gap: 160px; }
+  }
+
+  @media (max-width: 1199px) {
+    .page { padding: 32px 36px 52px; }
+    .sections { gap: 80px; margin-top: 80px; }
+    .section { flex: 0 0 180px; }
+    .card-stack { height: 170px; }
+    .modal-box { padding: 32px 24px; }
+    .detail-box { gap: 32px; }
+    .detail-image { width: 44%; }
+  }
+
+  @media (max-width: 899px) {
+    .page { padding: 28px 24px 48px; }
+    .header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .name-block { align-self: flex-end; margin-top: -8px; }
+    .sections { gap: 40px; margin-top: 60px; }
+    .section { flex: 0 0 160px; }
+    .card-stack { height: 150px; }
+    .modal-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+    .modal-grid.wide-cards { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+    .detail-box { flex-direction: column; gap: 20px; max-width: 560px; }
+    .detail-image { width: 100%; aspect-ratio: 2/3; max-width: 280px; margin: 0 auto; }
+    .detail-box--wide .detail-image { max-width: 100%; aspect-ratio: 16/9; }
+    .detail-close { top: -10px; right: -10px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1 class="main-title">
+      <span class="title-line">Portfolio</span><br>
+      <span class="title-line">&amp;</span><br>
+      <span class="title-line">Logofolio</span>
+    </h1>
+    <p class="name-block">Martin Losos</p>
+  </div>
+
+  <div class="sections">
+    <div class="section">
+      <p class="section-title">Portfolio</p>
+      <div class="card-stack" onclick="openModal('portfolio')" title="Zobrazit všechny práce">
+        <div class="card"><img src="BALLIN.webp" alt="Be All In"></div>
+        <div class="card"><img src="CD.webp" alt="Cat Demon"></div>
+        <div class="card"><img src="flowers.webp" alt="Flowers"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Logofolio</p>
+      <div class="card-stack" onclick="openModal('logofolio')" title="Zobrazit všechny práce">
+        <div class="card"><img src="3dprint3.webp" alt="3D Print For You"></div>
+        <div class="card"><img src="logo.webp" alt="LM Logo"></div>
+        <div class="card"><img src="mockup_slunce.webp" alt="U Slunce"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Webs</p>
+      <div class="card-stack" onclick="openModal('webs')" title="Zobrazit všechny práce">
+        <div class="card card--wide"><img src="volyne.webp" alt="Volyně MŠ"></div>
+        <div class="card card--wide"><img src="obnovakrajiny.webp" alt="Obnova krajiny"></div>
+        <div class="card card--wide"><div class="placeholder-bg"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- GRID MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <p class="modal-title" id="modal-title"></p>
+      <button class="modal-close" onclick="closeModal()" aria-label="Zavřít">✕</button>
+    </div>
+    <div class="modal-grid" id="modal-grid"></div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="detail-overlay" id="detail" onclick="handleDetailOverlayClick(event)">
+  <div class="detail-box" id="detail-box">
+    <button class="detail-close" onclick="closeDetail()" aria-label="Zavřít">✕</button>
+    <div class="detail-image" id="detail-image"><div class="placeholder-bg"></div></div>
+    <div class="detail-content">
+      <p class="detail-category" id="detail-category"></p>
+      <p class="detail-name" id="detail-name"></p>
+      <div class="detail-divider"></div>
+      <p class="detail-description" id="detail-description"></p>
+      <div class="detail-tags" id="detail-tags"></div>
+      <div class="detail-nav">
+        <button id="btn-prev" onclick="navigateDetail(-1)" aria-label="Předchozí">&#8592;</button>
+        <button id="btn-next" onclick="navigateDetail(1)" aria-label="Další">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const data = {
+    portfolio: {
+      label: 'Portfolio',
+      items: [
+        { image: 'BALLIN.webp', name: 'Be All In', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Plakát', '2024'] },
+        { image: 'CD.webp', name: 'Cat Demon', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Ilustrace', '2024'] },
+        { image: 'flowers.webp', name: 'Flowers', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Plakát', '2024'] },
+        { image: 'chaos.webp', name: 'Chaos', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Plakát', '2024'] },
+        { image: 'CHYD.webp', name: 'Chase Your Dreams', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Plakát', '2024'] },
+        { image: 'LS.webp', name: 'Lucky Six', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Plakát', '2024'] },
+        { image: 'swg.webp', name: 'Swag', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Koláž', '2024'] },
+      ]
+    },
+    logofolio: {
+      label: 'Logofolio',
+      items: [
+        { image: '3dprint3.webp', name: '3D Print For You', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Logo', '2024'] },
+        { image: 'logo.webp', name: 'LM Logo', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Logo', '2024'] },
+        { image: 'mockup_slunce.webp', name: 'U Slunce', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Branding', '2024'] },
+        { image: 'rozner_cut.webp', name: 'Rozner', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Logo', '2024'] },
+        { image: 'thaitruck3.webp', name: 'Thai Truck', description: 'Popis projektu — krátký text o čem práce je, pro koho, jaký byl záměr.', tags: ['Logo', '2024'], fit: 'contain', bg: '#b5c832' },
+      ]
+    },
+    webs: {
+      label: 'Webs',
+      items: [
+        { image: 'volyne.webp', name: 'MŠ Volyně', description: 'Popis webu — klient, technologie, cíl projektu.', tags: ['HTML/CSS', '2024'], fit: 'cover' },
+        { image: 'obnovakrajiny.webp', name: 'Obnova krajiny', description: 'Popis webu — klient, technologie, cíl projektu.', tags: ['WordPress', '2024'], fit: 'cover' },
+      ]
+    }
+  };
+
+  let currentSection = null;
+  let currentIndex = 0;
+
+  function openModal(key) {
+    currentSection = key;
+    const section = data[key];
+    document.getElementById('modal-title').textContent = section.label;
+    const grid = document.getElementById('modal-grid');
+    grid.innerHTML = '';
+    if (key === 'webs') grid.classList.add('wide-cards');
+    else grid.classList.remove('wide-cards');
+    section.items.forEach((item, i) => {
+      const card = document.createElement('div');
+      card.className = 'modal-card';
+      card.onclick = () => openDetail(i);
+      if (item.image) {
+        const img = document.createElement('img');
+        img.src = item.image; img.alt = item.name;
+        if (item.fit) img.style.objectFit = item.fit;
+        if (item.bg) card.style.background = item.bg;
+        card.appendChild(img);
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'placeholder-bg';
+        card.appendChild(ph);
+      }
+      grid.appendChild(card);
+    });
+    document.getElementById('modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  function openDetail(index) {
+    currentIndex = index;
+    renderDetail();
+    const box = document.getElementById('detail-box');
+    if (currentSection === 'webs') box.classList.add('detail-box--wide');
+    else box.classList.remove('detail-box--wide');
+    document.getElementById('detail').classList.add('active');
+  }
+
+  function renderDetail() {
+    const item = data[currentSection].items[currentIndex];
+    const total = data[currentSection].items.length;
+    const imgContainer = document.getElementById('detail-image');
+    imgContainer.innerHTML = '';
+    if (item.image) {
+      const img = document.createElement('img');
+      img.src = item.image; img.alt = item.name;
+      if (item.fit) img.style.objectFit = item.fit;
+      if (item.bg) imgContainer.style.background = item.bg;
+      else imgContainer.style.background = '';
+      imgContainer.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'placeholder-bg';
+      imgContainer.appendChild(ph);
+    }
+    document.getElementById('detail-category').textContent = data[currentSection].label;
+    document.getElementById('detail-name').textContent = item.name;
+    document.getElementById('detail-description').textContent = item.description;
+    const tagsEl = document.getElementById('detail-tags');
+    tagsEl.innerHTML = '';
+    (item.tags || []).forEach(tag => {
+      const t = document.createElement('span');
+      t.className = 'detail-tag'; t.textContent = tag;
+      tagsEl.appendChild(t);
+    });
+    document.getElementById('btn-prev').disabled = currentIndex === 0;
+    document.getElementById('btn-next').disabled = currentIndex === total - 1;
+  }
+
+  function navigateDetail(dir) {
+    const total = data[currentSection].items.length;
+    const next = currentIndex + dir;
+    if (next >= 0 && next < total) { currentIndex = next; renderDetail(); }
+  }
+
+  function closeDetail() {
+    document.getElementById('detail').classList.remove('active');
+  }
+
+  function handleDetailOverlayClick(e) {
+    if (e.target === document.getElementById('detail')) closeDetail();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('detail').classList.contains('active')) closeDetail();
+      else closeModal();
+    }
+    if (document.getElementById('detail').classList.contains('active')) {
+      if (e.key === 'ArrowLeft') navigateDetail(-1);
+      if (e.key === 'ArrowRight') navigateDetail(1);
+    }
+  });
+</script>
+</body>
+</html>
