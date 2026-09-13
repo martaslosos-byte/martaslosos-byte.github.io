@@ -104,16 +104,17 @@
   .side-nav button {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: clamp(12.5px, 1.35vw, 17px);
-    letter-spacing: 0.05em;
+    font-size: clamp(10px, 0.85vw, 13px);
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     color: rgba(202,170,152,0.65);
     background: transparent;
     border: 1px solid rgba(202,170,152,0.25);
     border-radius: 20px;
-    padding: 12px 6px;
+    padding: 10px 5px;
     width: 100%;
-    max-width: 170px;
+    max-width: 150px;
+    overflow-wrap: break-word;
     cursor: pointer;
     transition: border-color 0.2s, color 0.2s, background 0.2s;
   }
@@ -642,7 +643,7 @@
   .detail-nav button:disabled { opacity: 0.3; cursor: default; }
 
   /* ---- mobil: rám se zjednoduší, navigace jde nahoru, jeviště je téměř přes celou obrazovku ---- */
-  @media (max-width: 760px), (max-height: 480px) and (orientation: landscape) {
+  @media (max-width: 900px), (max-height: 480px) and (orientation: landscape) {
     :root {
       --v1: 4%; --v2: 4%; --v3: 4%; --v4: 4%;
       --v5: 96%; --v6: 96%; --v7: 96%; --v8: 96%;
