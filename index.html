@@ -3,148 +3,432 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio & Logofolio — Martin Losos</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<title>Martin Losos — grafický design</title>
+<meta name="description" content="Martin Losos — grafický designer z jižních Čech. Portfolio, proces práce a kontakt.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { min-height: 100%; font-family: 'Syne', sans-serif; }
-
-  body {
-    background-color: #202940;
-    position: relative;
-    min-height: 100vh;
-    overflow-x: hidden;
+  :root {
+    /* pozice linek blueprint rámu, v % šířky/výšky obrazovky */
+    --v1: 7.4%;  --v2: 10.3%; --v3: 17.7%; --v4: 20.6%;
+    --v5: 79.4%; --v6: 82.3%; --v7: 89.7%; --v8: 92.6%;
+    --h1: 16.8%; --h2: 20.8%; --h3: 79.2%; --h4: 83.2%;
+    --ink: #CAAA98;
+    --panel: #4B4038;
+    --bg: #202940;
   }
 
-  body::after {
-    content: '';
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+  }
+
+  /* ---- BLUEPRINT RÁM ---- */
+  .frame {
     position: fixed;
     inset: 0;
-    background-image: url('texture.webp');
-    background-size: cover;
-    background-position: center;
-    mix-blend-mode: screen;
-    opacity: 0.18;
-    pointer-events: none;
     z-index: 0;
+    pointer-events: none;
   }
+  .frame .v-line, .frame .h-line { position: absolute; background: #000; }
+  .frame .v-line { top: 0; bottom: 0; width: 2px; }
+  .frame .h-line { left: 0; right: 0; height: 2px; }
 
-  .page {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    width: 100%;
-    padding: 28px 40px 48px;
+  /* ---- NÁZEV WEBU (nad horní linií, podtržený) ---- */
+  .site-title {
+    position: fixed;
+    left: var(--v4);
+    right: calc(100% - var(--v5));
+    top: 0;
+    height: var(--h1);
+    z-index: 2;
     display: flex;
-    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 10px;
   }
-
-  .header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 28px;
-  }
-
-  .main-title {
+  .site-title h1 {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: clamp(22px, 3.5vw, 54px);
-    color: #CAAA98;
+    font-size: clamp(16px, 2.4vw, 32px);
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    line-height: 0.95;
-    letter-spacing: -0.01em;
+    color: var(--ink);
+    background: var(--panel);
+    padding: 5px 18px 7px;
+    white-space: nowrap;
   }
 
-  .title-line {
-    display: inline-block;
-    background: #4B4038;
-    padding: 4px 14px 6px;
-    margin-bottom: 6px;
+  /* ---- JMÉNO (pod spodní linií) ---- */
+  .site-name {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: var(--h4);
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
-  .name-block {
+  .site-name p {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: clamp(11px, 1.4vw, 20px);
-    color: #CAAA98;
+    font-size: clamp(13px, 1.5vw, 18px);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background: #4B4038;
+    color: var(--ink);
+    background: var(--panel);
     padding: 6px 18px 8px;
-    align-self: flex-start;
-    margin-top: 8px;
   }
 
-  .sections {
-    display: flex;
-    gap: 140px;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-    margin-top: 120px;
-    width: 100%;
-  }
-
-  .section {
+  /* ---- LEVÝ SLOUPEC (navigace) ---- */
+  .side-nav {
+    position: fixed;
+    left: var(--v2);
+    right: calc(100% - var(--v3));
+    top: var(--h2);
+    bottom: calc(100% - var(--h3));
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 0 0 220px;
+    justify-content: center;
+    gap: clamp(10px, 2.2vh, 28px);
+    padding: 0 clamp(4px, 0.8vw, 10px);
+  }
+  .side-nav button {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(12.5px, 1.35vw, 17px);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(202,170,152,0.65);
+    background: transparent;
+    border: 1px solid rgba(202,170,152,0.25);
+    border-radius: 20px;
+    padding: 12px 6px;
+    width: 100%;
+    max-width: 170px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .side-nav button:hover { border-color: rgba(202,170,152,0.6); color: var(--ink); }
+  .side-nav button.is-active {
+    color: var(--ink);
+    border-color: rgba(202,170,152,0.7);
+    background: rgba(202,170,152,0.08);
   }
 
-  .section-title {
+  /* ---- STŘEDNÍ OBDÉLNÍK (jeviště) ---- */
+  .stage {
+    position: fixed;
+    left: var(--v4);
+    right: calc(100% - var(--v5));
+    top: var(--h2);
+    bottom: calc(100% - var(--h3));
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(14px, 3vh, 40px) clamp(16px, 4vw, 56px);
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateY(14px);
+    pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .slide.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-label {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: clamp(13px, 1.5vw, 24px);
-    color: #CAAA98;
-    background: #4B4038;
+    font-size: clamp(20px, 2.6vw, 34px);
+    color: var(--ink);
+    background: var(--panel);
     padding: 4px 16px 6px;
-    margin-bottom: 18px;
-    align-self: center;
+    margin-bottom: clamp(10px, 2.4vh, 24px);
     display: inline-block;
+    flex: 0 0 auto;
   }
 
+  .slide-body {
+    font-family: 'Syne', sans-serif;
+    font-weight: 400;
+    font-size: clamp(17px, 1.9vw, 23px);
+    line-height: 1.7;
+    color: rgba(202,170,152,0.85);
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .slide-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(22px, 3vw, 36px);
+    line-height: 1.45;
+    color: var(--ink);
+    max-width: 620px;
+    text-align: center;
+  }
+
+  /* ---- proces ---- */
+  .process-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.6vh, 16px);
+    width: 100%;
+    max-width: 560px;
+  }
+  .process-step {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    border-top: 1px solid rgba(202,170,152,0.18);
+    padding-top: clamp(6px, 1.2vh, 12px);
+    text-align: left;
+  }
+  .process-step:first-child { border-top: none; padding-top: 0; }
+  .process-num {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(14px, 1.8vw, 22px);
+    color: rgba(202,170,152,0.4);
+    flex: 0 0 auto;
+    width: 30px;
+  }
+  .process-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(16px, 1.75vw, 21px);
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .process-text p {
+    font-family: 'Syne', sans-serif;
+    font-weight: 400;
+    font-size: clamp(14.5px, 1.45vw, 18px);
+    line-height: 1.6;
+    color: rgba(202,170,152,0.8);
+  }
+
+  /* ---- fan galerie ---- */
+  .gallery-row {
+    display: flex;
+    gap: clamp(32px, 6vw, 90px);
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .gallery-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+    width: clamp(130px, 17vw, 200px);
+  }
   .card-stack {
     position: relative;
     width: 100%;
-    height: 160px;
+    height: clamp(95px, 13vh, 150px);
     cursor: pointer;
   }
-
   .card-stack .card {
     position: absolute;
     width: 42%;
     aspect-ratio: 2/3;
     background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.45), 0 4px 14px rgba(0,0,0,0.3);
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.45), 0 3px 10px rgba(0,0,0,0.3);
     overflow: hidden;
     transition: transform 0.3s cubic-bezier(.25,.8,.25,1);
   }
-
-  .card-stack .card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .card-stack .card--wide {
-    aspect-ratio: 16/10;
-    width: 72%;
-  }
-
+  .card-stack .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-stack .card--wide { aspect-ratio: 16/10; width: 72%; }
   .card-stack .card:nth-child(1) { left: 2%; bottom: 0; transform: rotate(-10deg); transform-origin: bottom center; z-index: 1; }
   .card-stack .card:nth-child(2) { left: 50%; transform: translateX(-50%) rotate(-1deg); bottom: 0; z-index: 2; }
   .card-stack .card:nth-child(3) { right: 2%; bottom: 0; transform: rotate(9deg); transform-origin: bottom center; z-index: 1; }
-
-  .card-stack:hover .card:nth-child(1) { transform: rotate(-13deg) translateY(-8px); }
-  .card-stack:hover .card:nth-child(2) { transform: translateX(-50%) translateY(-12px) rotate(-1deg); }
-  .card-stack:hover .card:nth-child(3) { transform: rotate(12deg) translateY(-8px); }
-
+  .card-stack:hover .card:nth-child(1) { transform: rotate(-13deg) translateY(-6px); }
+  .card-stack:hover .card:nth-child(2) { transform: translateX(-50%) translateY(-10px) rotate(-1deg); }
+  .card-stack:hover .card:nth-child(3) { transform: rotate(12deg) translateY(-6px); }
   .placeholder-bg { width: 100%; height: 100%; background: #e8e2dc; }
 
+  /* ---- kontakt formulář ---- */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.6vh, 16px);
+    width: 100%;
+    max-width: 480px;
+  }
+  .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .form-field { flex: 1 1 160px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
+  .form-field label {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(202,170,152,0.55);
+  }
+  .form-field input,
+  .form-field textarea {
+    font-family: 'Syne', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: rgba(202,170,152,0.06);
+    border: 1px solid rgba(202,170,152,0.25);
+    border-radius: 8px;
+    padding: 8px 11px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .form-field input::placeholder,
+  .form-field textarea::placeholder { color: rgba(202,170,152,0.35); }
+  .form-field input:focus,
+  .form-field textarea:focus {
+    border-color: rgba(202,170,152,0.6);
+    background: rgba(202,170,152,0.1);
+  }
+  .form-field textarea { resize: vertical; min-height: 60px; }
+
+  /* ---- vlastní animovaný výběr typu projektu ---- */
+  .custom-select { position: relative; }
+  .custom-select-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: rgba(202,170,152,0.06);
+    border: 1px solid rgba(202,170,152,0.25);
+    border-radius: 8px;
+    padding: 8px 11px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .custom-select-trigger:hover,
+  .custom-select-trigger:focus {
+    border-color: rgba(202,170,152,0.6);
+    background: rgba(202,170,152,0.1);
+    outline: none;
+  }
+  .custom-select-value.is-placeholder { color: rgba(202,170,152,0.35); }
+  .custom-select-arrow {
+    flex: 0 0 auto;
+    color: rgba(202,170,152,0.6);
+    transition: transform 0.3s cubic-bezier(.25,.8,.25,1);
+  }
+  .custom-select.is-open .custom-select-arrow { transform: rotate(180deg); }
+  .custom-select.is-open .custom-select-trigger {
+    border-color: rgba(202,170,152,0.6);
+    background: rgba(202,170,152,0.1);
+  }
+
+  .custom-select-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    list-style: none;
+    background: #232c48;
+    border: 1px solid rgba(202,170,152,0.25);
+    border-radius: 10px;
+    box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+    overflow: hidden;
+    z-index: 5;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: max-height 0.32s cubic-bezier(.25,.8,.25,1),
+                opacity 0.24s ease,
+                transform 0.28s cubic-bezier(.25,.8,.25,1);
+  }
+  .custom-select.is-open .custom-select-panel {
+    max-height: 220px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .custom-select-panel li {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: rgba(202,170,152,0.8);
+    padding: 9px 12px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .custom-select-panel li:hover,
+  .custom-select-panel li.is-selected {
+    background: rgba(202,170,152,0.12);
+    color: var(--ink);
+  }
+
+  .form-submit {
+    align-self: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--panel);
+    border: none;
+    border-radius: 22px;
+    padding: 10px 26px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .form-submit:hover { background: #5c4f45; }
+
+  .form-note {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    color: rgba(202,170,152,0.55);
+    text-align: center;
+  }
+
+  /* ---- listy s trojtečkou pro procházení slajdů (mobil) ---- */
+  .dots {
+    position: fixed;
+    left: 50%;
+    bottom: 3px;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: none;
+    gap: 8px;
+  }
+  .dots button {
+    width: 7px; height: 7px; border-radius: 50%;
+    border: 1px solid rgba(202,170,152,0.5);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+  .dots button.is-active { background: var(--ink); }
+
+  /* ---- modal / detail (nezměněno) ---- */
   .modal-overlay {
     display: flex;
     flex-direction: column;
@@ -185,8 +469,8 @@
     font-family: 'Playfair Display', serif;
     font-style: italic;
     font-size: clamp(22px, 3vw, 44px);
-    color: #CAAA98;
-    background: #4B4038;
+    color: var(--ink);
+    background: var(--panel);
     padding: 6px 20px 8px;
     display: inline-block;
   }
@@ -194,7 +478,7 @@
   .modal-close {
     background: rgba(202,170,152,0.12);
     border: 1px solid rgba(202,170,152,0.3);
-    color: #CAAA98;
+    color: var(--ink);
     font-size: 17px;
     width: 36px;
     height: 36px;
@@ -213,10 +497,7 @@
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 18px;
   }
-
-  .modal-grid.wide-cards {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
+  .modal-grid.wide-cards { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
 
   .modal-card {
     aspect-ratio: 2/3;
@@ -227,10 +508,7 @@
     cursor: pointer;
     transition: transform 0.2s;
   }
-
-  .modal-grid.wide-cards .modal-card {
-    aspect-ratio: 16/10;
-  }
+  .modal-grid.wide-cards .modal-card { aspect-ratio: 16/10; }
   .modal-card:hover { transform: scale(1.04); }
   .modal-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -276,10 +554,7 @@
   .detail-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   .detail-box--wide { flex-direction: column; max-width: 760px; }
-  .detail-box--wide .detail-image {
-    width: 100%;
-    aspect-ratio: 16/9;
-  }
+  .detail-box--wide .detail-image { width: 100%; aspect-ratio: 16/9; }
 
   .detail-content {
     flex: 1;
@@ -302,15 +577,11 @@
     font-family: 'Playfair Display', serif;
     font-style: italic;
     font-size: clamp(22px, 3vw, 42px);
-    color: #CAAA98;
+    color: var(--ink);
     line-height: 1.15;
   }
 
-  .detail-divider {
-    width: 40px;
-    height: 1.5px;
-    background: rgba(202,170,152,0.3);
-  }
+  .detail-divider { width: 40px; height: 1.5px; background: rgba(202,170,152,0.3); }
 
   .detail-description {
     font-family: 'Syne', sans-serif;
@@ -320,13 +591,7 @@
     line-height: 1.75;
   }
 
-  .detail-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 4px;
-  }
-
+  .detail-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .detail-tag {
     font-family: 'Syne', sans-serif;
     font-size: 11px;
@@ -345,7 +610,7 @@
     right: -14px;
     background: rgba(202,170,152,0.12);
     border: 1px solid rgba(202,170,152,0.3);
-    color: #CAAA98;
+    color: var(--ink);
     font-size: 17px;
     width: 36px;
     height: 36px;
@@ -358,16 +623,11 @@
   }
   .detail-close:hover { background: rgba(202,170,152,0.25); }
 
-  .detail-nav {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-    padding-top: 20px;
-  }
+  .detail-nav { display: flex; gap: 10px; margin-top: auto; padding-top: 20px; }
   .detail-nav button {
     background: rgba(202,170,152,0.1);
     border: 1px solid rgba(202,170,152,0.25);
-    color: #CAAA98;
+    color: var(--ink);
     font-size: 18px;
     width: 38px;
     height: 38px;
@@ -381,142 +641,205 @@
   .detail-nav button:hover { background: rgba(202,170,152,0.22); }
   .detail-nav button:disabled { opacity: 0.3; cursor: default; }
 
-  /* Velký monitor (1600px+) */
-  @media (min-width: 1600px) {
-    .page { padding: 56px 80px 80px; }
-    .sections { gap: 180px; }
-    .section { flex: 0 0 300px; }
-    .card-stack { height: 320px; }
-    .modal-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-    .modal-grid.wide-cards { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
-  }
+  /* ---- mobil: rám se zjednoduší, navigace jde nahoru, jeviště je téměř přes celou obrazovku ---- */
+  @media (max-width: 760px) {
+    .site-title { left: 5%; right: 5%; top: 3%; height: 9%; }
+    .site-title h1 { font-size: clamp(15px, 5vw, 22px); white-space: normal; line-height: 1.2; }
 
-  /* Střední velký monitor (1400–1599px) */
-  @media (min-width: 1400px) and (max-width: 1599px) {
-    .section { flex: 0 0 260px; }
-    .card-stack { height: 270px; }
-    .sections { gap: 160px; }
-  }
-
-  /* Menší monitor / notebook (900–1199px) */
-  @media (max-width: 1199px) {
-    .page { padding: 32px 36px 52px; }
-    .sections { gap: 80px; margin-top: 80px; }
-    .section { flex: 0 0 180px; }
-    .card-stack { height: 170px; }
-    .modal-box { padding: 32px 24px; }
-    .detail-box { gap: 32px; }
-    .detail-image { width: 44%; }
-  }
-
-  /* Tablet na šířku (768–899px) */
-  @media (max-width: 899px) and (min-width: 768px) {
-    .page { padding: 28px 24px 48px; }
-    .header { flex-direction: column; gap: 12px; align-items: flex-start; }
-    .name-block { align-self: flex-end; margin-top: -8px; }
-    .sections { gap: 40px; margin-top: 60px; }
-    .section { flex: 0 0 160px; }
-    .card-stack { height: 150px; }
-    .modal-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
-    .modal-grid.wide-cards { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-    .detail-box { flex-direction: column; gap: 20px; max-width: 560px; }
-    .detail-image { width: 100%; aspect-ratio: 2/3; max-width: 280px; margin: 0 auto; }
-    .detail-box--wide .detail-image { max-width: 100%; aspect-ratio: 16/9; }
-    .detail-close { top: -10px; right: -10px; }
-  }
-
-  /* Mobil (do 767px) */
-  @media (max-width: 767px) {
-    .page { padding: 24px 20px 60px; }
-
-    .header { flex-direction: column; gap: 10px; align-items: flex-start; }
-    .name-block { align-self: flex-end; margin-top: -8px; font-size: 13px; }
-    .main-title { font-size: clamp(28px, 9vw, 44px); }
-
-    .sections {
-      flex-direction: column;
-      align-items: center;
-      gap: 56px;
-      margin-top: 48px;
+    .side-nav {
+      left: 5%; right: 5%; top: 12%; bottom: auto; height: 8%;
+      flex-direction: row; justify-content: center; gap: 8px; padding: 0;
     }
+    .side-nav button { max-width: none; flex: 1 1 0; font-size: 9px; padding: 8px 4px; }
 
-    .section {
-      flex: 0 0 auto;
-      width: 100%;
-      max-width: 340px;
-    }
+    .stage { left: 5%; right: 5%; top: 21%; bottom: 12%; }
 
-    .section-title { font-size: 18px; }
+    .site-name { top: auto; height: 10%; bottom: 0; }
 
-    .card-stack { height: 210px; }
+    .dots { display: flex; }
 
-    /* Modal */
-    .modal-box { padding: 24px 16px; }
-    .modal-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .modal-grid.wide-cards { grid-template-columns: 1fr; }
-
-    /* Detail */
-    .detail-overlay { padding: 24px 16px; align-items: flex-start; }
-    .detail-box {
-      flex-direction: column;
-      gap: 20px;
-      max-width: 100%;
-      padding-top: 24px;
-    }
-    .detail-image {
-      width: 100%;
-      max-width: 240px;
-      margin: 0 auto;
-    }
-    .detail-box--wide .detail-image { max-width: 100%; aspect-ratio: 16/9; }
-    .detail-close { top: -8px; right: -8px; }
-    .detail-name { font-size: 26px; }
-    .detail-nav { padding-top: 12px; }
+    .frame .v-line:nth-child(1), .frame .v-line:nth-child(2),
+    .frame .v-line:nth-child(7), .frame .v-line:nth-child(8) { opacity: 0.35; }
   }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <div class="header">
-    <h1 class="main-title">
-      <span class="title-line">Portfolio</span><br>
-      <span class="title-line">&amp;</span><br>
-      <span class="title-line">Logofolio</span>
-    </h1>
-    <p class="name-block">Martin Losos</p>
+  <div class="frame" aria-hidden="true">
+    <div class="v-line" style="left:var(--v1)"></div>
+    <div class="v-line" style="left:var(--v2)"></div>
+    <div class="v-line" style="left:var(--v3)"></div>
+    <div class="v-line" style="left:var(--v4)"></div>
+    <div class="v-line" style="left:var(--v5)"></div>
+    <div class="v-line" style="left:var(--v6)"></div>
+    <div class="v-line" style="left:var(--v7)"></div>
+    <div class="v-line" style="left:var(--v8)"></div>
+    <div class="h-line" style="top:var(--h1)"></div>
+    <div class="h-line" style="top:var(--h2)"></div>
+    <div class="h-line" style="top:var(--h3)"></div>
+    <div class="h-line" style="top:var(--h4)"></div>
   </div>
 
-  <div class="sections">
-    <div class="section">
-      <p class="section-title">Portfolio</p>
-      <div class="card-stack" onclick="openModal('portfolio')" title="Zobrazit všechny práce">
-        <div class="card"><img src="BALLIN.webp" alt="Be All In"></div>
-        <div class="card"><img src="CD.webp" alt="Cat Demon"></div>
-        <div class="card"><img src="flowers.webp" alt="Flowers"></div>
-      </div>
-    </div>
+  <div class="site-title"><h1>Portfolio &amp; Logofolio</h1></div>
 
-    <div class="section">
-      <p class="section-title">Logofolio</p>
-      <div class="card-stack" onclick="openModal('logofolio')" title="Zobrazit všechny práce">
-        <div class="card"><img src="3dprint3.webp" alt="3D Print For You"></div>
-        <div class="card"><img src="logo.webp" alt="LM Logo"></div>
-        <div class="card"><img src="mockup_slunce.webp" alt="U Slunce"></div>
-      </div>
-    </div>
+  <nav class="side-nav">
+    <button data-slide="0" class="is-active">Kdo jsem</button>
+    <button data-slide="3">Práce</button>
+    <button data-slide="4">Úspěchy</button>
+    <button data-slide="5">Kontakt</button>
+  </nav>
 
-    <div class="section">
-      <p class="section-title">Webs</p>
-      <div class="card-stack" onclick="openModal('webs')" title="Zobrazit všechny práce">
-        <div class="card card--wide"><img src="volyne.webp" alt="Volyně MŠ"></div>
-        <div class="card card--wide"><img src="obnovakrajiny.webp" alt="Obnova krajiny"></div>
-        <div class="card card--wide"><div class="placeholder-bg"></div></div>
+  <div class="site-name"><p>Martin Losos</p></div>
+
+  <main class="stage">
+
+    <!-- 0: KDO JSEM -->
+    <section class="slide is-active" data-index="0" id="kdo-jsem">
+      <p class="slide-label">Kdo jsem</p>
+      <p class="slide-body">
+        Jmenuju se Martin Losos a dělám grafický design. Pocházím z jižních
+        Čech, z Týna nad Vltavou. Ke grafice jsem se dostal během studia na
+        automobilní škole — tam jsem si mimoděk uvědomil, že mě tvorba
+        vizuálů baví víc než cokoliv jiného v oboru. Postupně jsem zkoušel
+        různé experimenty, až přišla první skutečná příležitost. Od té
+        chvíle jsem se do designu pustil naplno a hledám další cesty, jak se
+        v něm posouvat.
+      </p>
+    </section>
+
+    <!-- 1: PROČ TO DĚLÁM -->
+    <section class="slide" data-index="1" id="proc">
+      <p class="slide-label">Proč to dělám</p>
+      <p class="slide-quote">
+        „Táhne mě výsledek — vědomí, že práci, kterou vytvořím, může vidět
+        kdokoliv na světě. Je to pocit, který mě žene dopředu při každém
+        dalším projektu.“
+      </p>
+    </section>
+
+    <!-- 2: JAK TO DĚLÁM -->
+    <section class="slide" data-index="2" id="process">
+      <p class="slide-label">Proces tvorby</p>
+      <div class="process-list">
+        <div class="process-step">
+          <span class="process-num">01</span>
+          <div class="process-text">
+            <h3>Poznávám klienta</h3>
+            <p>Zjišťuju co nejvíc informací o projektu a o tom, jak klient
+              funguje, abych mohl navrhnout řešení, které mu bude opravdu
+              sedět.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="process-num">02</span>
+          <div class="process-text">
+            <h3>Nezávazný návrh</h3>
+            <p>Než se pustím do finální práce, ukážu směr, kterým by se
+              vizuál mohl ubírat, aby byl klient od začátku v obraze.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="process-num">03</span>
+          <div class="process-text">
+            <h3>Tvorba a komunikace</h3>
+            <p>Práci dotáhnu do konce v úzkém kontaktu s klientem —
+              spokojenost na obou stranách je pro mě to nejdůležitější.</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- 3: PRÁCE (fan galerie) -->
+    <section class="slide" data-index="3" id="prace">
+      <p class="slide-label">Práce</p>
+      <div class="gallery-row">
+        <div class="gallery-col">
+          <div class="card-stack" onclick="openModal('portfolio')" title="Zobrazit všechny práce">
+            <div class="card"><img src="BALLIN.webp" alt="Be All In"></div>
+            <div class="card"><img src="CD.webp" alt="Cat Demon"></div>
+            <div class="card"><img src="flowers.webp" alt="Flowers"></div>
+          </div>
+          <p class="slide-label" style="margin-top:14px; margin-bottom:0;">Portfolio</p>
+        </div>
+        <div class="gallery-col">
+          <div class="card-stack" onclick="openModal('logofolio')" title="Zobrazit všechny práce">
+            <div class="card"><img src="3dprint3.webp" alt="3D Print For You"></div>
+            <div class="card"><img src="logo.webp" alt="LM Logo"></div>
+            <div class="card"><img src="mockup_slunce.webp" alt="U Slunce"></div>
+          </div>
+          <p class="slide-label" style="margin-top:14px; margin-bottom:0;">Logofolio</p>
+        </div>
+        <div class="gallery-col">
+          <div class="card-stack" onclick="openModal('webs')" title="Zobrazit všechny práce">
+            <div class="card card--wide"><img src="volyne.webp" alt="Volyně MŠ"></div>
+            <div class="card card--wide"><img src="obnovakrajiny.webp" alt="Obnova krajiny"></div>
+            <div class="card card--wide"><div class="placeholder-bg"></div></div>
+          </div>
+          <p class="slide-label" style="margin-top:14px; margin-bottom:0;">Webs</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4: ÚSPĚCHY -->
+    <section class="slide" data-index="4" id="uspechy">
+      <p class="slide-label">Úspěchy</p>
+      <p class="slide-quote">
+        „Úspěch pro mě neznamená číslo v tabulce. Je to každá nová zakázka —
+        šance ukázat, co umím, a posunout se zas o kousek dál.“
+      </p>
+    </section>
+
+    <!-- 5: KONTAKT -->
+    <section class="slide" data-index="5" id="kontakt">
+      <p class="slide-label">Kontakt</p>
+      <form class="contact-form" action="https://formspree.io/f/mbgjvkzr" method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="name">Jméno</label>
+            <input type="text" id="name" name="name" placeholder="Jak se jmenuješ" required>
+          </div>
+          <div class="form-field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="tvuj@email.cz" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="type-trigger">Typ projektu</label>
+          <div class="custom-select" id="type-select">
+            <button type="button" class="custom-select-trigger" id="type-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span class="custom-select-value is-placeholder">Vyber typ projektu</span>
+              <svg class="custom-select-arrow" width="11" height="7" viewBox="0 0 11 7" fill="none">
+                <path d="M1 1L5.5 5.5L10 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <ul class="custom-select-panel" role="listbox" id="type-panel">
+              <li role="option" data-value="Logo">Logo</li>
+              <li role="option" data-value="Vizuální identita">Vizuální identita</li>
+              <li role="option" data-value="Web">Web</li>
+              <li role="option" data-value="Jiné">Jiné</li>
+            </ul>
+            <input type="hidden" id="type" name="type" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="message">Zpráva</label>
+          <textarea id="message" name="message" placeholder="Popiš mi svůj projekt a co od něj čekáš" required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Odeslat poptávku</button>
+        <p class="form-note">Formulář posílá zprávu přímo na můj e-mail přes Formspree.</p>
+      </form>
+    </section>
+
+  </main>
+
+  <div class="dots">
+    <button data-slide="0" class="is-active" aria-label="Slide 1"></button>
+    <button data-slide="1" aria-label="Slide 2"></button>
+    <button data-slide="2" aria-label="Slide 3"></button>
+    <button data-slide="3" aria-label="Slide 4"></button>
+    <button data-slide="4" aria-label="Slide 5"></button>
+    <button data-slide="5" aria-label="Slide 6"></button>
   </div>
-
-</div>
 
 <!-- GRID MODAL -->
 <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
@@ -549,7 +872,7 @@
 </div>
 
 <script>
-  const data = {
+  const galleryData = {
     portfolio: {
       label: 'Portfolio',
       items: [
@@ -583,12 +906,12 @@
     }
   };
 
-  let currentSection = null;
-  let currentIndex = 0;
+  let currentGallerySection = null;
+  let currentGalleryIndex = 0;
 
   function openModal(key) {
-    currentSection = key;
-    const section = data[key];
+    currentGallerySection = key;
+    const section = galleryData[key];
     document.getElementById('modal-title').textContent = section.label;
     const grid = document.getElementById('modal-grid');
     grid.innerHTML = '';
@@ -612,12 +935,10 @@
       grid.appendChild(card);
     });
     document.getElementById('modal').classList.add('active');
-    document.body.style.overflow = 'hidden';
   }
 
   function closeModal() {
     document.getElementById('modal').classList.remove('active');
-    document.body.style.overflow = '';
   }
 
   function handleOverlayClick(e) {
@@ -625,17 +946,17 @@
   }
 
   function openDetail(index) {
-    currentIndex = index;
+    currentGalleryIndex = index;
     renderDetail();
     const box = document.getElementById('detail-box');
-    if (currentSection === 'webs') box.classList.add('detail-box--wide');
+    if (currentGallerySection === 'webs') box.classList.add('detail-box--wide');
     else box.classList.remove('detail-box--wide');
     document.getElementById('detail').classList.add('active');
   }
 
   function renderDetail() {
-    const item = data[currentSection].items[currentIndex];
-    const total = data[currentSection].items.length;
+    const item = galleryData[currentGallerySection].items[currentGalleryIndex];
+    const total = galleryData[currentGallerySection].items.length;
     const imgContainer = document.getElementById('detail-image');
     imgContainer.innerHTML = '';
     if (item.image) {
@@ -650,7 +971,7 @@
       ph.className = 'placeholder-bg';
       imgContainer.appendChild(ph);
     }
-    document.getElementById('detail-category').textContent = data[currentSection].label;
+    document.getElementById('detail-category').textContent = galleryData[currentGallerySection].label;
     document.getElementById('detail-name').textContent = item.name;
     document.getElementById('detail-description').textContent = item.description;
     const tagsEl = document.getElementById('detail-tags');
@@ -660,14 +981,14 @@
       t.className = 'detail-tag'; t.textContent = tag;
       tagsEl.appendChild(t);
     });
-    document.getElementById('btn-prev').disabled = currentIndex === 0;
-    document.getElementById('btn-next').disabled = currentIndex === total - 1;
+    document.getElementById('btn-prev').disabled = currentGalleryIndex === 0;
+    document.getElementById('btn-next').disabled = currentGalleryIndex === total - 1;
   }
 
   function navigateDetail(dir) {
-    const total = data[currentSection].items.length;
-    const next = currentIndex + dir;
-    if (next >= 0 && next < total) { currentIndex = next; renderDetail(); }
+    const total = galleryData[currentGallerySection].items.length;
+    const next = currentGalleryIndex + dir;
+    if (next >= 0 && next < total) { currentGalleryIndex = next; renderDetail(); }
   }
 
   function closeDetail() {
@@ -679,15 +1000,128 @@
   }
 
   document.addEventListener('keydown', e => {
+    const modalOpen = document.getElementById('detail').classList.contains('active') ||
+                       document.getElementById('modal').classList.contains('active');
     if (e.key === 'Escape') {
       if (document.getElementById('detail').classList.contains('active')) closeDetail();
-      else closeModal();
+      else if (document.getElementById('modal').classList.contains('active')) closeModal();
     }
     if (document.getElementById('detail').classList.contains('active')) {
       if (e.key === 'ArrowLeft') navigateDetail(-1);
       if (e.key === 'ArrowRight') navigateDetail(1);
+      return;
+    }
+    if (!modalOpen) {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); goToSlide(currentSlide + 1); }
+      if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); goToSlide(currentSlide - 1); }
     }
   });
+
+  /* ---- Stránkovaný scroll / prolínání slajdů ---- */
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const navButtons = Array.from(document.querySelectorAll('.side-nav button'));
+  const dotButtons = Array.from(document.querySelectorAll('.dots button'));
+  let currentSlide = 0;
+  let transitionLocked = false;
+
+  function isOverlayOpen() {
+    return document.getElementById('modal').classList.contains('active') ||
+           document.getElementById('detail').classList.contains('active');
+  }
+
+  function goToSlide(index) {
+    if (index < 0 || index >= slides.length || transitionLocked) return;
+    transitionLocked = true;
+    slides[currentSlide].classList.remove('is-active');
+    currentSlide = index;
+    slides[currentSlide].classList.add('is-active');
+
+    navButtons.forEach(btn => {
+      btn.classList.toggle('is-active', parseInt(btn.dataset.slide, 10) === currentSlide);
+    });
+    dotButtons.forEach(btn => {
+      btn.classList.toggle('is-active', parseInt(btn.dataset.slide, 10) === currentSlide);
+    });
+
+    window.setTimeout(() => { transitionLocked = false; }, 650);
+  }
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => goToSlide(parseInt(btn.dataset.slide, 10)));
+  });
+  dotButtons.forEach(btn => {
+    btn.addEventListener('click', () => goToSlide(parseInt(btn.dataset.slide, 10)));
+  });
+
+  window.addEventListener('wheel', (e) => {
+    if (isOverlayOpen()) return;
+    if (Math.abs(e.deltaY) < 8) return;
+    e.preventDefault();
+    if (e.deltaY > 0) goToSlide(currentSlide + 1);
+    else goToSlide(currentSlide - 1);
+  }, { passive: false });
+
+  let touchStartY = null;
+  window.addEventListener('touchstart', (e) => {
+    if (isOverlayOpen()) return;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  window.addEventListener('touchend', (e) => {
+    if (isOverlayOpen() || touchStartY === null) return;
+    const diff = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) goToSlide(currentSlide + 1);
+      else goToSlide(currentSlide - 1);
+    }
+    touchStartY = null;
+  }, { passive: true });
+
+  /* ---- Vlastní animovaný dropdown (Typ projektu) ---- */
+  const typeSelect = document.getElementById('type-select');
+  if (typeSelect) {
+    const trigger = document.getElementById('type-trigger');
+    const panel = document.getElementById('type-panel');
+    const valueEl = trigger.querySelector('.custom-select-value');
+    const hiddenInput = document.getElementById('type');
+    const options = Array.from(panel.querySelectorAll('li'));
+
+    function openDropdown() {
+      typeSelect.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+    function closeDropdown() {
+      typeSelect.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+    function toggleDropdown() {
+      if (typeSelect.classList.contains('is-open')) closeDropdown();
+      else openDropdown();
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('is-selected'));
+        opt.classList.add('is-selected');
+        valueEl.textContent = opt.dataset.value;
+        valueEl.classList.remove('is-placeholder');
+        hiddenInput.value = opt.dataset.value;
+        closeDropdown();
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!typeSelect.contains(e.target)) closeDropdown();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && typeSelect.classList.contains('is-open')) closeDropdown();
+    });
+  }
 </script>
 </body>
 </html>
