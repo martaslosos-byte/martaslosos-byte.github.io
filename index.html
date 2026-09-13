@@ -413,7 +413,6 @@
   .dots {
     position: fixed;
     left: 50%;
-    bottom: 3px;
     transform: translateX(-50%);
     z-index: 3;
     display: none;
@@ -643,6 +642,12 @@
 
   /* ---- mobil: rám se zjednoduší, navigace jde nahoru, jeviště je téměř přes celou obrazovku ---- */
   @media (max-width: 760px) {
+    :root {
+      --v1: 5%; --v2: 5%; --v3: 5%; --v4: 5%;
+      --v5: 95%; --v6: 95%; --v7: 95%; --v8: 95%;
+      --h1: 3%; --h2: 20.5%; --h3: 88%; --h4: 90%;
+    }
+
     .site-title { left: 5%; right: 5%; top: 3%; height: 9%; }
     .site-title h1 { font-size: clamp(15px, 5vw, 22px); white-space: normal; line-height: 1.2; }
 
@@ -650,16 +655,25 @@
       left: 5%; right: 5%; top: 12%; bottom: auto; height: 8%;
       flex-direction: row; justify-content: center; gap: 8px; padding: 0;
     }
-    .side-nav button { max-width: none; flex: 1 1 0; font-size: 9px; padding: 8px 4px; }
+    .side-nav button { max-width: none; flex: 1 1 0; font-size: 10px; padding: 9px 4px; }
 
     .stage { left: 5%; right: 5%; top: 21%; bottom: 12%; }
 
     .site-name { top: auto; height: 10%; bottom: 0; }
 
-    .dots { display: flex; }
+    .dots { display: flex; bottom: calc(100% - var(--h3) + 6px); }
 
-    .frame .v-line:nth-child(1), .frame .v-line:nth-child(2),
-    .frame .v-line:nth-child(7), .frame .v-line:nth-child(8) { opacity: 0.35; }
+    .slide { padding: 14px 14px; }
+    .slide-label { font-size: clamp(16px, 4.5vw, 21px); }
+    .slide-body { font-size: clamp(13.5px, 4vw, 16px); }
+    .slide-quote { font-size: clamp(16px, 5vw, 21px); }
+
+    .gallery-row { gap: 18px; }
+    .gallery-col { width: clamp(96px, 26vw, 130px); }
+    .card-stack { height: clamp(66px, 15vw, 90px); }
+
+    .process-list { max-width: 100%; }
+    .contact-form { max-width: 100%; }
   }
 </style>
 </head>
