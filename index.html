@@ -147,6 +147,14 @@
   }
   .paper.no-transition { transition: none !important; }
 
+  /* bez viditelného posuvníku v papíru */
+  .paper { scrollbar-width: none; -ms-overflow-style: none; }
+  .paper::-webkit-scrollbar { display: none; }
+
+  /* papír s procesem má víc textu, tak je o něco kompaktnější, aby se vešel celý */
+  .paper--process { padding-top: clamp(22px, 4vh, 40px); padding-bottom: clamp(22px, 4vh, 40px); }
+  .paper--process .paper-title { margin-bottom: clamp(10px, 2vh, 18px); }
+
   .paper-title {
     font-family: 'Unbounded', sans-serif;
     font-weight: 600;
@@ -376,6 +384,15 @@
     .hero-title h1 .accent { display: inline; font-size: 1em; }
     .stage { width: min(80vw, 400px); height: min(60vh, 540px); }
     .paper { padding: 24px 22px; }
+    .paper--process { padding: 18px 20px; }
+  }
+  /* nízké telefony (např. iPhone SE) – menší text, aby se vše vešlo bez posouvání */
+  @media (max-width: 860px) and (max-height: 720px) {
+    .paper-body { font-size: 12px; line-height: 1.65; }
+    .process-list { gap: 8px; }
+    .process-step { padding-top: 6px; }
+    .process-text h3 { font-size: 12px; }
+    .process-text p { font-size: 11px; line-height: 1.55; }
     .detail-box { flex-direction: column; gap: 24px; }
     .detail-image { width: 100%; max-width: 360px; }
     .work-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
@@ -420,7 +437,7 @@
         </p>
       </article>
 
-      <article class="paper" style="--tilt:-1deg; --fly-x:-40%; --fly-rot:-26deg;" data-index="2" id="proces">
+      <article class="paper paper--process" style="--tilt:-1deg; --fly-x:-40%; --fly-rot:-26deg;" data-index="2" id="proces">
         <p class="paper-title">Proces <span class="accent">tvorby</span></p>
         <div class="process-list">
           <div class="process-step">
